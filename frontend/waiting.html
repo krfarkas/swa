@@ -1,4 +1,9 @@
-<div id="msg">Várakozás...</div>
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Várószoba</h2>
+<div id="msg">Várakozás…</div>
+
 <script>
 const userId = crypto.randomUUID();
 
@@ -7,7 +12,8 @@ async function poll() {
   const j = await r.json();
 
   if (j.status === 'active') {
-    location.href = '/';
+    document.cookie = "waitingroom=allowed; path=/";
+    location.href = "/";
   } else {
     msg.innerText =
       `Pozíció: ${j.position}, ~${j.etaSeconds}s`;
@@ -18,3 +24,5 @@ fetch(`/api/enter?userId=${userId}`).then(() =>
   setInterval(poll, 5000)
 );
 </script>
+</body>
+</html>
