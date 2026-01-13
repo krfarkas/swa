@@ -1,0 +1,20 @@
+<div id="msg">Várakozás...</div>
+<script>
+const userId = crypto.randomUUID();
+
+async function poll() {
+  const r = await fetch(`/api/status?userId=${userId}`);
+  const j = await r.json();
+
+  if (j.status === 'active') {
+    location.href = '/';
+  } else {
+    msg.innerText =
+      `Pozíció: ${j.position}, ~${j.etaSeconds}s`;
+  }
+}
+
+fetch(`/api/enter?userId=${userId}`).then(() =>
+  setInterval(poll, 5000)
+);
+</script>
